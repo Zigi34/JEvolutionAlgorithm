@@ -14,9 +14,15 @@ public final class Constants {
 	public static final String PROPERTY_EVOLUTION_GENERATION_MIN = "evolution.generation.min";
 	public static final String PROPERTY_EVOLUTION_GENERATION_MAX = "evolution.generation.max";
 	public static final String PROPERTY_EVOLUTION_GENERATION_DEFAULT = "evolution.generation.default";
-	public static final String PROPERTY_THREAD_WAITTOKILL = "evolution.thread.waitToKill";
-	public static final String PROPERTY_SELECT_DEFAULT_PROBABILITY = "evolution.function.select.defaultProbability";
+	public static final String PROPERTY_EVOLUTION_THREAD_WAITTOKILL = "evolution.thread.waitToKill";
+	public static final String PROPERTY_EVOLUTION_SELECT_DEFAULT_PROBABILITY = "evolution.function.select.defaultProbability";
+
+	// PROPERTY NAMES FOR CONFIG FILE
+	public static final String PROPERTY_CONFIG_CONFIG_MANAGER = "config.manager";
 
 	// Cross exception
 	public static final String EXCEPTION_MUST_BE_EVEN_INDIVIDUAL = "It must be even number of individuals for cross operation";
+
+	// INITIALIZE EXCEPTION
+	public static final String EXCEPTION_NULL_SOLUTION_SPACE = "Solution space is not set";
 }

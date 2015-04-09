@@ -14,7 +14,7 @@ public class RouleteWheelSelectFunction implements SelectFunction {
 
 	private double probability = Double.parseDouble(PropertyManager.getValue(
 			Constants.EVOLUTION_CONFIG_FILE,
-			Constants.PROPERTY_SELECT_DEFAULT_PROBABILITY));
+			Constants.PROPERTY_EVOLUTION_SELECT_DEFAULT_PROBABILITY));
 	private Integer maxSelected;
 
 	public List<Individual> select(Population population) {

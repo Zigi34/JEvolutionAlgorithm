@@ -1,13 +1,45 @@
 package org.evolution.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 public final class Utils {
 	private static final Logger log = Logger.getLogger(Utils.class);
-
 	private static final Random random = new Random();
+	private static DocumentBuilder builder;
+
+	static {
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory
+				.newInstance();
+		try {
+			builder = builderFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			log.error(e);
+		}
+	}
+
+	public static Object createInstance(String className)
+			throws ClassNotFoundException, NoSuchMethodException,
+			SecurityException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
+		Class<?> clazz = Class.forName(className);
+		Constructor<?> ctor = clazz.getConstructor();
+		Object object = ctor.newInstance(new Object[] {});
+		return object;
+	}
 
 	public static double getRandom() {
 		return random.nextDouble();
@@ -19,6 +51,29 @@ public final class Utils {
 
 	public static int getRandomInt() {
 		return random.nextInt();
+	}
+
+	public static Document loadXML(InputStream stream) {
+		try {
+			return builder.parse(stream);
+		} catch (SAXException e) {
+			log.error(e);
+		} catch (IOException e) {
+			log.error(e);
+		}
+		return null;
+	}
+
+	public static Document loadXML(File file) {
+		try {
+			Document document = builder.parse(new FileInputStream(file));
+			return document;
+		} catch (SAXException e) {
+			log.error(e);
+		} catch (IOException e) {
+			log.error(e);
+		}
+		return null;
 	}
 
 	public static int getRandomInt(int max) {

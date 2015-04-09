@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.evolution.EvolAlgorithm;
+import org.evolution.exception.InitializeException;
 import org.evolution.function.CrossFunction;
 import org.evolution.function.MutateFunction;
 import org.evolution.function.SelectFunction;
 import org.evolution.function.cross.OnePointCrossFunction;
-import org.evolution.function.mutate.GenericMutateFunction;
+import org.evolution.function.mutate.StandardMutateFunction;
 import org.evolution.function.select.RouleteWheelSelectFunction;
 import org.evolution.population.Population;
 import org.evolution.population.individual.Individual;
@@ -22,10 +23,10 @@ public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
 	private MutateFunction<T> mutateFunction;
 
 	@Override
-	public void initialize() {
+	public void initialize() throws InitializeException {
 		super.initialize();
 
-		MutateFunction<T> mutate = new GenericMutateFunction<T>();
+		MutateFunction<T> mutate = new StandardMutateFunction<T>();
 		mutate.setProbability(0.3);
 		setMutateFunction(mutate);
 

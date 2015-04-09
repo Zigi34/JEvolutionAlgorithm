@@ -5,6 +5,7 @@ import java.util.Observable;
 import org.apache.log4j.Logger;
 import org.evolution.criteria.TerminateCriteria;
 import org.evolution.event.EvolAlgorithmEvent;
+import org.evolution.exception.InitializeException;
 import org.evolution.function.FitnessFunction;
 import org.evolution.population.Population;
 import org.evolution.population.individual.Individual;
@@ -26,7 +27,7 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 	private Population population;
 
 	// TERMINATE CRITERIA
-	private TerminateCriteria terminate;
+	private TerminateCriteria<T> terminate;
 
 	// FUNCTIONS
 	private FitnessFunction fitnessFunction;
@@ -58,25 +59,38 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 
 	/**
 	 * Inicialize setting for generic evolution algorithm
+	 * 
+	 * @throws InitializeException
 	 */
-	public void initialize() {
+	public void initialize() throws InitializeException {
+		// GENERATION NUMBER SET TO ZERO
 		this.generation = 0;
+
+		// TERMINATE PREVIOUS THREAD
 		if (this.evolThread != null) {
 			Utils.killThread(this.evolThread, Utils.toLong(PropertyManager
 					.getValue(Constants.EVOLUTION_CONFIG_FILE,
-							Constants.PROPERTY_THREAD_WAITTOKILL)));
+							Constants.PROPERTY_EVOLUTION_THREAD_WAITTOKILL)));
 		}
 
-		// select best individual from initialize population
+		// CREATE NEW THREAD
+		this.isRunning = true;
+		this.evolThread = new Thread(this);
+
+		// CHECK SOLUTION SPACE INITIALIZATION
+		if (this.solutionSpace == null) {
+			throw new InitializeException(this,
+					Constants.EXCEPTION_NULL_SOLUTION_SPACE);
+		}
+
+		// SELECT BEST INDIVIDUAL FROM INITIALIZE POPULATION
 		getPopulation().checkBestIndividual(getFitnessFunction());
 		setBestSolution(getPopulation().getBestIndividual());
 
-		this.isRunning = true;
-		this.evolThread = new Thread(this);
-		log.info("Evolution initialized");
+		log.debug("Evolution initialized");
 	}
 
-	public void startEvolution() {
+	public void startEvolution() throws InitializeException {
 		initialize();
 		evolThread.start();
 		notifyChanged(EvolAlgorithmEvent.EVENT_ALGORITHM_START);
@@ -107,11 +121,11 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 		this.population = population;
 	}
 
-	public TerminateCriteria getTerminateCriteria() {
+	public TerminateCriteria<T> getTerminateCriteria() {
 		return terminate;
 	}
 
-	public void setTerminateCriteria(TerminateCriteria terminate) {
+	public void setTerminateCriteria(TerminateCriteria<T> terminate) {
 		this.terminate = terminate;
 	}
 

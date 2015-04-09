@@ -9,7 +9,7 @@ import org.evolution.population.individual.Individual;
 import org.evolution.space.SolutionSpace;
 import org.evolution.util.Utils;
 
-public class GenericMutateFunction<T extends Individual> implements
+public class StandardMutateFunction<T extends Individual> implements
 		MutateFunction<T> {
 
 	private double probability;
