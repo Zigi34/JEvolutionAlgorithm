@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <config_managers>
-        <config_manager type="algorithm" name="GeneticAlgorithmConfig" class="org.evolution.config.algorithm.GAConfigManager" />
+        <config_manager type="algorithm" class="org.evolution.config.algorithm.GeneticAlgorithmModel" />
+        <config_manager type="cross" class="org.evolution.config.cross.OnePointCrossModel" />
     </config_managers>
-    <algorithms>
-        <algorithm name="GeneticAlgorithm" class="org.evolution.ga.GeneticAlgorithm">
-            <manager>GeneticAlgorithmConfig</manager>
-        </algorithm>
-    </algorithms>
 </config>

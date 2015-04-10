@@ -19,6 +19,9 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 	// LOGGING
 	private static Logger log = Logger.getLogger(EvolAlgorithm.class);
 
+	// MODEL
+	protected String model = "";
+
 	// THREAD SETTINGS
 	private Thread evolThread = null;
 	private boolean isRunning = false;
@@ -193,5 +196,13 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 
 	public void incrementGeneration() {
 		this.generation++;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String name) {
+		model = name;
 	}
 }

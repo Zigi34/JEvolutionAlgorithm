@@ -68,4 +68,8 @@ public class OnePointCrossFunction<T extends Individual> implements
 		return this.algorithm;
 	}
 
+	public String getName() {
+		return "StandardCrossFunction";
+	}
+
 }

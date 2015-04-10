@@ -21,4 +21,6 @@ public interface CrossFunction<T extends Individual> {
 	public void setAlgorithm(EvolAlgorithm<T> algorithm);
 
 	public EvolAlgorithm<T> getAlgorithm();
+
+	public String getName();
 }

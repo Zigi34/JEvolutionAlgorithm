@@ -11,15 +11,30 @@ import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public final class Utils {
 	private static final Logger log = Logger.getLogger(Utils.class);
 	private static final Random random = new Random();
 	private static DocumentBuilder builder;
+	private static Transformer transformer;
+
+	private static XPath xPath = XPathFactory.newInstance().newXPath();
 
 	static {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory
@@ -29,6 +44,37 @@ public final class Utils {
 		} catch (ParserConfigurationException e) {
 			log.error(e);
 		}
+
+		TransformerFactory transformerFactory = TransformerFactory
+				.newInstance();
+		try {
+			transformer = transformerFactory.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			log.error(e);
+		}
+	}
+
+	public static XPath getXPath() {
+		return xPath;
+	}
+
+	/**
+	 * Return attribute value with name
+	 * 
+	 * @param node
+	 *            go throught attributes
+	 * @param name
+	 *            name of atrribute
+	 * @return
+	 */
+	public static String getAttributeValue(Node node, String name) {
+		NamedNodeMap list = node.getAttributes();
+		for (int i = 0; i < list.getLength(); i++) {
+			Node attrib = list.item(i);
+			if (node.getNodeName().equals(name))
+				return attrib.getNodeValue();
+		}
+		return null;
 	}
 
 	public static Object createInstance(String className)
@@ -71,6 +117,31 @@ public final class Utils {
 		} catch (SAXException e) {
 			log.error(e);
 		} catch (IOException e) {
+			log.error(e);
+		}
+		return null;
+	}
+
+	public static void saveXML(Document document, File file) {
+		DOMSource source = new DOMSource(document);
+		StreamResult streamResult = new StreamResult(file);
+		try {
+			transformer.transform(source, streamResult);
+		} catch (TransformerException e) {
+			log.error(e);
+		}
+	}
+
+	public static Document createDocument() {
+		return builder.newDocument();
+	}
+
+	public static Node getNode(Document doc, String xmlPath) {
+		try {
+			Node node = (Node) xPath.compile(xmlPath).evaluate(doc,
+					XPathConstants.NODE);
+			return node;
+		} catch (XPathExpressionException e) {
 			log.error(e);
 		}
 		return null;

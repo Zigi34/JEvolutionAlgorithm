@@ -22,6 +22,10 @@ public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
 	private CrossFunction<T> crossFunction = new OnePointCrossFunction<T>();
 	private MutateFunction<T> mutateFunction;
 
+	public GeneticAlgorithm() {
+		setModel("GeneticAlgorithmModel");
+	}
+
 	@Override
 	public void initialize() throws InitializeException {
 		super.initialize();
@@ -33,6 +37,8 @@ public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
 		SelectFunction select = new RouleteWheelSelectFunction();
 		select.setProbability(1.0);
 		setSelectFunction(select);
+
+		setModel("GeneticAlgorithmModel");
 	}
 
 	public void run() {
