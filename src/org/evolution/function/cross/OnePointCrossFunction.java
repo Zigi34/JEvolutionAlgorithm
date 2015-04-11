@@ -6,33 +6,33 @@ import java.util.List;
 import org.evolution.EvolAlgorithm;
 import org.evolution.exception.CrossException;
 import org.evolution.function.CrossFunction;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 import org.evolution.util.Constants;
 import org.evolution.util.Utils;
 
-public class OnePointCrossFunction<T extends Individual> implements
+public class OnePointCrossFunction<T extends Solution> implements
 		CrossFunction<T> {
 
 	private EvolAlgorithm<T> algorithm;
-	private double probability;
+	private double probability = 0.75;
 
-	public List<Individual> cross(List<Individual> individuals)
+	public List<Solution> cross(List<Solution> individuals)
 			throws CrossException {
 		return cross(individuals, this.probability);
 	}
 
-	public List<Individual> cross(List<Individual> individuals,
-			double probability) throws CrossException {
+	public List<Solution> cross(List<Solution> individuals, double probability)
+			throws CrossException {
 
 		if (individuals.size() % 2 != 0) {
 			throw new CrossException(this.algorithm,
 					Constants.EXCEPTION_MUST_BE_EVEN_INDIVIDUAL);
 
 		}
-		List<Individual> list = new LinkedList<Individual>();
+		List<Solution> list = new LinkedList<Solution>();
 		for (int i = 1; i < individuals.size(); i += 2) {
-			Individual item1 = individuals.get(i - 1).clone();
-			Individual item2 = individuals.get(i).clone();
+			Solution item1 = individuals.get(i - 1).clone();
+			Solution item2 = individuals.get(i).clone();
 
 			int length = item1.size();
 			int index1 = Utils.getRandomInt(length - 1) + 1;
@@ -68,8 +68,9 @@ public class OnePointCrossFunction<T extends Individual> implements
 		return this.algorithm;
 	}
 
-	public String getName() {
-		return "StandardCrossFunction";
+	@Override
+	public String toString() {
+		return "OnePointCross(" + getProbability() + ")";
 	}
 
 }

@@ -7,7 +7,6 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
 import org.evolution.EvolAlgorithm;
-import org.evolution.util.Config;
 import org.evolution.util.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -22,12 +21,12 @@ public abstract class AlgorithmFactory {
 	public static EvolAlgorithm<?> load(File file) {
 		Document doc = Utils.loadXML(file);
 		try {
-			Node algorithm = (Node) Utils.getXPath().compile("algorithm")
-					.evaluate(doc, XPathConstants.NODE);
-			String factoryName = Utils.getAttributeValue(algorithm, "type");
-			ModelFactory factory = Config.getModel(factoryName).manager;
+			String model = (String) Utils.getXPath()
+					.compile("algorithm/@model")
+					.evaluate(doc, XPathConstants.STRING);
+			ModelFactory factory = Config.getModelByName(model).createFactory();
 			if (factory != null) {
-				return factory.loadConfiguration(doc);
+				return (EvolAlgorithm<?>) factory.loadConfiguration(doc);
 			}
 		} catch (XPathExpressionException e) {
 			log.error(e);
@@ -36,11 +35,11 @@ public abstract class AlgorithmFactory {
 	}
 
 	public static void save(EvolAlgorithm<?> algorithm, File file) {
-		ModelFactory factory = Config.getModel(algorithm.getModel()).manager;
+		ModelFactory factory = Config.getModelByInstance(algorithm.getClass())
+				.createFactory();
 		Document document = Utils.createDocument();
 		Node root = factory.saveConfiguration(algorithm);
-		Node firstDocImportedNode = document.importNode(root, true);
-		document.appendChild(firstDocImportedNode);
+		document.appendChild(document.importNode(root, true));
 		Utils.saveXML(document, file);
 	}
 }

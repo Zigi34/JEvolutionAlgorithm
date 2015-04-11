@@ -1,4 +1,4 @@
-package org.evolution.population.individual;
+package org.evolution.population.solution;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -7,15 +7,15 @@ import java.util.List;
 
 import org.evolution.value.NumericValue;
 
-public class ArrayIndividual<T extends NumericValue> extends Individual {
+public class ArraySolution<T extends NumericValue> extends Solution {
 	private static final NumberFormat formatter = new DecimalFormat("#0.00");
 	private List<T> array;
 
-	public ArrayIndividual() {
+	public ArraySolution() {
 		this.array = new ArrayList<T>(1);
 	}
 
-	public ArrayIndividual(int size) {
+	public ArraySolution(int size) {
 		this.array = new ArrayList<T>(size);
 	}
 
@@ -55,8 +55,12 @@ public class ArrayIndividual<T extends NumericValue> extends Individual {
 		return array.size();
 	}
 
-	public Individual clone() {
-		ArrayIndividual<T> clone = new ArrayIndividual<T>();
+	public List<T> getAll() {
+		return array;
+	}
+
+	public Solution clone() {
+		ArraySolution<T> clone = new ArraySolution<T>();
 		for (int i = 0; i < size(); i++) {
 			NumericValue value = (NumericValue) array.get(i);
 			clone.addValue((T) value.clone());

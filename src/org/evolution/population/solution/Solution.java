@@ -1,6 +1,6 @@
-package org.evolution.population.individual;
+package org.evolution.population.solution;
 
-public abstract class Individual {
+public abstract class Solution {
 
 	protected double fitness;
 
@@ -28,5 +28,5 @@ public abstract class Individual {
 
 	public abstract int size();
 
-	public abstract Individual clone();
+	public abstract Solution clone();
 }

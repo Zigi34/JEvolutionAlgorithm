@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.evolution.EvolAlgorithm;
 import org.evolution.exception.MutateException;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 
-public interface MutateFunction<T extends Individual> {
+public interface MutateFunction<T extends Solution> {
 
-	public void mutate(List<Individual> individuals) throws MutateException;
+	public void mutate(List<Solution> individuals) throws MutateException;
 
-	public void mutate(List<Individual> individuals, double probability)
+	public void mutate(List<Solution> individuals, double probability)
 			throws MutateException;
 
 	public void setProbability(double probability);

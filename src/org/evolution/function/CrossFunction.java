@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.evolution.EvolAlgorithm;
 import org.evolution.exception.CrossException;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 
-public interface CrossFunction<T extends Individual> {
+public interface CrossFunction<T extends Solution> {
 
-	public List<Individual> cross(List<Individual> individuals)
+	public List<Solution> cross(List<Solution> individuals)
 			throws CrossException;
 
-	public List<Individual> cross(List<Individual> individuals,
-			double probability) throws CrossException;
+	public List<Solution> cross(List<Solution> individuals, double probability)
+			throws CrossException;
 
 	public void setProbability(double probability);
 
@@ -21,6 +21,4 @@ public interface CrossFunction<T extends Individual> {
 	public void setAlgorithm(EvolAlgorithm<T> algorithm);
 
 	public EvolAlgorithm<T> getAlgorithm();
-
-	public String getName();
 }

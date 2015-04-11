@@ -4,7 +4,7 @@ import org.evolution.EvolAlgorithm;
 
 public class GenerationCriteria extends TerminateCriteria {
 
-	public GenerationCriteria(EvolAlgorithm algorithm) {
+	public GenerationCriteria(EvolAlgorithm<?> algorithm) {
 		super(algorithm);
 	}
 

@@ -9,15 +9,15 @@ import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 import org.evolution.function.FitnessFunction;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 
-public class Population implements List<Individual> {
+public class Population implements List<Solution> {
 	// LOGGING
 	private static final Logger log = Logger.getLogger(Population.class);
 
 	// INDIVIDUALS
-	private List<Individual> individuals = new ArrayList<Individual>(20);
-	private Individual bestIndividual = null;
+	private List<Solution> individuals = new ArrayList<Solution>(20);
+	private Solution bestIndividual = null;
 	private int maxIndividuals = 0;
 
 	private static final FitnessComparator comparator = new FitnessComparator();
@@ -47,13 +47,13 @@ public class Population implements List<Individual> {
 			remove(size() - 1);
 	}
 
-	public void addIndividual(Individual indiv) {
+	public void addIndividual(Solution indiv) {
 		if (!individuals.contains(indiv)) {
 			individuals.add(indiv);
 		}
 	}
 
-	public void removeIndividual(Individual indiv) {
+	public void removeIndividual(Solution indiv) {
 		individuals.remove(indiv);
 	}
 
@@ -71,9 +71,9 @@ public class Population implements List<Individual> {
 
 	public void checkBestIndividual(FitnessFunction function) {
 		if (individuals.size() > 0) {
-			Individual best = individuals.get(0);
+			Solution best = individuals.get(0);
 			Double bestFitness = function.evaluate(best);
-			for (Individual individual : individuals) {
+			for (Solution individual : individuals) {
 				Double fitness = function.evaluate(individual);
 				if (fitness > bestFitness) {
 					best = individual;
@@ -88,27 +88,27 @@ public class Population implements List<Individual> {
 		checkBestIndividual(null);
 	}
 
-	public Individual getBestIndividual() {
+	public Solution getBestIndividual() {
 		return this.bestIndividual;
 	}
 
-	public void setBestIndividual(Individual bestIndividual) {
+	public void setBestIndividual(Solution bestIndividual) {
 		this.bestIndividual = bestIndividual;
 	}
 
-	public boolean add(Individual individual) {
+	public boolean add(Solution individual) {
 		return individuals.add(individual);
 	}
 
-	public void add(int index, Individual individual) {
+	public void add(int index, Solution individual) {
 		individuals.add(index, individual);
 	}
 
-	public boolean addAll(Collection<? extends Individual> list) {
+	public boolean addAll(Collection<? extends Solution> list) {
 		return individuals.addAll(list);
 	}
 
-	public boolean addAll(int index, Collection<? extends Individual> list) {
+	public boolean addAll(int index, Collection<? extends Solution> list) {
 		return individuals.addAll(index, list);
 	}
 
@@ -120,7 +120,7 @@ public class Population implements List<Individual> {
 		return individuals.containsAll(list);
 	}
 
-	public Individual get(int index) {
+	public Solution get(int index) {
 		return individuals.get(index);
 	}
 
@@ -132,7 +132,7 @@ public class Population implements List<Individual> {
 		return individuals.isEmpty();
 	}
 
-	public Iterator<Individual> iterator() {
+	public Iterator<Solution> iterator() {
 		return individuals.iterator();
 	}
 
@@ -140,11 +140,11 @@ public class Population implements List<Individual> {
 		return individuals.lastIndexOf(arg0);
 	}
 
-	public ListIterator<Individual> listIterator() {
+	public ListIterator<Solution> listIterator() {
 		return individuals.listIterator();
 	}
 
-	public ListIterator<Individual> listIterator(int arg0) {
+	public ListIterator<Solution> listIterator(int arg0) {
 		return individuals.listIterator(arg0);
 	}
 
@@ -152,7 +152,7 @@ public class Population implements List<Individual> {
 		return individuals.remove(arg0);
 	}
 
-	public Individual remove(int arg0) {
+	public Solution remove(int arg0) {
 		return individuals.remove(arg0);
 	}
 
@@ -164,7 +164,7 @@ public class Population implements List<Individual> {
 		return individuals.retainAll(arg0);
 	}
 
-	public Individual set(int arg0, Individual arg1) {
+	public Solution set(int arg0, Solution arg1) {
 		return individuals.set(arg0, arg1);
 	}
 
@@ -172,7 +172,7 @@ public class Population implements List<Individual> {
 		return individuals.size();
 	}
 
-	public List<Individual> subList(int arg0, int arg1) {
+	public List<Solution> subList(int arg0, int arg1) {
 		return individuals.subList(arg0, arg1);
 	}
 

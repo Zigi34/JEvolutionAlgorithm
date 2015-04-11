@@ -2,16 +2,16 @@ package org.evolution.space;
 
 import java.util.List;
 
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 import org.evolution.space.bounds.SolutionBound;
 
-public interface SolutionSpace<T extends Individual> {
+public interface SolutionSpace<T extends Solution> {
 
-	public abstract Individual randomIndividual();
+	public abstract Solution randomIndividual();
 
-	public abstract boolean isValid(Individual individual);
+	public abstract boolean isValid(Solution individual);
 
-	public abstract void repairIndividual(Individual individual);
+	public abstract void repairIndividual(Solution individual);
 
 	public void setSolutionBounds(List<SolutionBound<T>> bounds);
 

@@ -12,9 +12,9 @@ import org.evolution.function.cross.OnePointCrossFunction;
 import org.evolution.function.mutate.StandardMutateFunction;
 import org.evolution.function.select.RouleteWheelSelectFunction;
 import org.evolution.population.Population;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 
-public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
+public class GeneticAlgorithm<T extends Solution> extends EvolAlgorithm<T> {
 
 	private static final Logger log = Logger.getLogger(GeneticAlgorithm.class);
 
@@ -22,34 +22,31 @@ public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
 	private CrossFunction<T> crossFunction = new OnePointCrossFunction<T>();
 	private MutateFunction<T> mutateFunction;
 
-	public GeneticAlgorithm() {
-		setModel("GeneticAlgorithmModel");
-	}
-
 	@Override
 	public void initialize() throws InitializeException {
 		super.initialize();
 
-		MutateFunction<T> mutate = new StandardMutateFunction<T>();
-		mutate.setProbability(0.3);
-		setMutateFunction(mutate);
+		if (mutateFunction == null) {
+			MutateFunction<T> mutate = new StandardMutateFunction<T>();
+			mutate.setProbability(0.3);
+			setMutateFunction(mutate);
+		}
 
-		SelectFunction select = new RouleteWheelSelectFunction();
-		select.setProbability(1.0);
-		setSelectFunction(select);
-
-		setModel("GeneticAlgorithmModel");
+		if (selectFunction == null) {
+			SelectFunction select = new RouleteWheelSelectFunction();
+			select.setProbability(1.0);
+			setSelectFunction(select);
+		}
 	}
 
 	public void run() {
 		try {
 			getFitnessFunction().evaluate(getPopulation());
+			log.debug("EVALUATED");
 			while (!getTerminateCriteria().isTerminated() && isRunning()) {
 
-				List<Individual> list = getPopulation();
-				log.debug("POPULATION:" + list.size());
 				// SELECT OPERATOR
-				List<Individual> selected = getSelectFunction().select(
+				List<Solution> selected = getSelectFunction().select(
 						getPopulation());
 				log.debug("SELECTED:" + selected.size());
 
@@ -60,12 +57,12 @@ public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
 				log.debug("SELECTED:" + selected.size());
 
 				// CROSS OPERATOR
-				List<Individual> crossed = getCrossFunction().cross(selected);
+				List<Solution> crossed = getCrossFunction().cross(selected);
 				getMutateFunction().mutate(crossed);
 				log.debug("MUTATED:" + crossed.size());
 
 				// EVALUATE MUTATED POPULATION
-				for (Individual individual : crossed) {
+				for (Solution individual : crossed) {
 					getFitnessFunction().evaluate(individual);
 					log.debug(individual);
 				}
@@ -84,9 +81,8 @@ public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
 				// Set NEW POPULATION
 				setPopulation(newPopulation);
 				log.debug("SET NEW POPULATION:" + newPopulation.size());
-				Individual bestInPopulation = getPopulation()
-						.getBestIndividual();
-				Individual bestOfAll = getBestSolution();
+				Solution bestInPopulation = getPopulation().getBestIndividual();
+				Solution bestOfAll = getBestSolution();
 				log.debug("BEST INDIVIDUAL: " + bestOfAll);
 				if (bestInPopulation.getFitness() > bestOfAll.getFitness()) {
 					setBestSolution(bestInPopulation);
@@ -97,6 +93,7 @@ public class GeneticAlgorithm<T extends Individual> extends EvolAlgorithm<T> {
 			}
 		} catch (Exception e) {
 			log.error(e);
+			e.printStackTrace();
 		}
 		stopEvolution();
 	}

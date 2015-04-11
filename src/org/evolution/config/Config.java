@@ -1,4 +1,4 @@
-package org.evolution.util;
+package org.evolution.config;
 
 import java.io.InputStream;
 import java.util.Hashtable;
@@ -9,9 +9,9 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
-import org.evolution.config.AlgorithmFactory;
-import org.evolution.config.ModelFactory;
-import org.evolution.config.model.ConfigModel;
+import org.evolution.util.Constants;
+import org.evolution.util.PropertyManager;
+import org.evolution.util.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -43,17 +43,18 @@ public class Config {
 			for (int i = 0; i < nodes.getLength(); i++) {
 				try {
 					Node node = nodes.item(i);
-					String classPath = node.getAttributes()
-							.getNamedItem("class").getNodeValue();
-
 					ConfigModel model = new ConfigModel();
-					model.manager = (ModelFactory) Utils
-							.createInstance(classPath);
+					model.name = node.getAttributes().getNamedItem("name")
+							.getNodeValue();
+					model.model = node.getAttributes().getNamedItem("model")
+							.getNodeValue();
 					model.type = node.getAttributes().getNamedItem("type")
 							.getNodeValue();
+					model.instance = node.getAttributes()
+							.getNamedItem("instance").getNodeValue();
 
-					models.put(model.manager.getName(), model);
-					log.debug(classPath);
+					models.put(model.name, model);
+					log.debug(model.name);
 				} catch (Exception e) {
 					log.error(e);
 				}
@@ -63,9 +64,31 @@ public class Config {
 		}
 	}
 
-	public static ConfigModel getModel(String name) {
+	public static ConfigModel getModelByName(String name) {
 		if (models == null)
 			initialize();
 		return models.get(name);
+	}
+
+	public static ConfigModel getModelByInstance(Class<?> clazz) {
+		if (models == null)
+			initialize();
+		for (String name : models.keySet()) {
+			ConfigModel model = models.get(name);
+			if (model.instance.equals(clazz.getName()))
+				return model;
+		}
+		return null;
+	}
+
+	public static ConfigModel getModelByModel(Class<?> clazz) {
+		if (models == null)
+			initialize();
+		for (String name : models.keySet()) {
+			ConfigModel model = models.get(name);
+			if (model.model.equals(clazz.getName()))
+				return model;
+		}
+		return null;
 	}
 }

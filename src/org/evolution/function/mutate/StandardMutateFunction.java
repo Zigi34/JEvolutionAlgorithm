@@ -5,27 +5,27 @@ import java.util.List;
 import org.evolution.EvolAlgorithm;
 import org.evolution.exception.MutateException;
 import org.evolution.function.MutateFunction;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 import org.evolution.space.SolutionSpace;
 import org.evolution.util.Utils;
 
-public class StandardMutateFunction<T extends Individual> implements
+public class StandardMutateFunction<T extends Solution> implements
 		MutateFunction<T> {
 
 	private double probability;
 	private EvolAlgorithm<T> algorithm;
 
-	public void mutate(List<Individual> individuals) throws MutateException {
+	public void mutate(List<Solution> individuals) throws MutateException {
 		mutate(individuals, probability);
 	}
 
-	public void mutate(List<Individual> individuals, double probability)
+	public void mutate(List<Solution> individuals, double probability)
 			throws MutateException {
 		for (int i = 0; i < individuals.size(); i++) {
 			if (Utils.getRandom() < probability) {
-				Individual solution = individuals.get(i);
+				Solution solution = individuals.get(i);
 				SolutionSpace<T> space = getAlgorithm().getSolutionSpace();
-				Individual randomIndividual = space.randomIndividual();
+				Solution randomIndividual = space.randomIndividual();
 				int randomIndex = Utils.getRandomInt(solution.size());
 				solution.setValue(randomIndividual.getValue(randomIndex),
 						randomIndex);
@@ -49,4 +49,8 @@ public class StandardMutateFunction<T extends Individual> implements
 		return algorithm;
 	}
 
+	@Override
+	public String toString() {
+		return "StandardMutateFunction(" + getProbability() + ")";
+	}
 }

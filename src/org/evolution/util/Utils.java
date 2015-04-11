@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.TypeVariable;
 import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -82,9 +83,19 @@ public final class Utils {
 			SecurityException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		Class<?> clazz = Class.forName(className);
+		TypeVariable<?>[] decl = clazz.getTypeParameters();
 		Constructor<?> ctor = clazz.getConstructor();
 		Object object = ctor.newInstance(new Object[] {});
 		return object;
+	}
+
+	public static Class<?> createClass(String name) {
+		try {
+			return Class.forName(name);
+		} catch (ClassNotFoundException e) {
+			log.error(e);
+		}
+		return null;
 	}
 
 	public static double getRandom() {

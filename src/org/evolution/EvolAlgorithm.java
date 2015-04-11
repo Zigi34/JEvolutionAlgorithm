@@ -3,24 +3,22 @@ package org.evolution;
 import java.util.Observable;
 
 import org.apache.log4j.Logger;
+import org.evolution.criteria.GenerationCriteria;
 import org.evolution.criteria.TerminateCriteria;
 import org.evolution.event.EvolAlgorithmEvent;
 import org.evolution.exception.InitializeException;
 import org.evolution.function.FitnessFunction;
 import org.evolution.population.Population;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 import org.evolution.space.SolutionSpace;
 import org.evolution.util.Constants;
 import org.evolution.util.PropertyManager;
 import org.evolution.util.Utils;
 
-public abstract class EvolAlgorithm<T extends Individual> extends Observable
+public abstract class EvolAlgorithm<T extends Solution> extends Observable
 		implements Runnable {
 	// LOGGING
 	private static Logger log = Logger.getLogger(EvolAlgorithm.class);
-
-	// MODEL
-	protected String model = "";
 
 	// THREAD SETTINGS
 	private Thread evolThread = null;
@@ -30,13 +28,13 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 	private Population population;
 
 	// TERMINATE CRITERIA
-	private TerminateCriteria<T> terminate;
+	private TerminateCriteria terminate;
 
 	// FUNCTIONS
 	private FitnessFunction fitnessFunction;
 
 	// SOLUTIONS
-	Individual bestSolution;
+	Solution bestSolution;
 
 	// SOLUTION SPACE
 	SolutionSpace<T> solutionSpace;
@@ -86,6 +84,11 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 					Constants.EXCEPTION_NULL_SOLUTION_SPACE);
 		}
 
+		if (terminate == null) {
+			GenerationCriteria criteria = new GenerationCriteria(this);
+			setTerminateCriteria(criteria);
+		}
+
 		// SELECT BEST INDIVIDUAL FROM INITIALIZE POPULATION
 		getPopulation().checkBestIndividual(getFitnessFunction());
 		setBestSolution(getPopulation().getBestIndividual());
@@ -124,11 +127,11 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 		this.population = population;
 	}
 
-	public TerminateCriteria<T> getTerminateCriteria() {
+	public TerminateCriteria getTerminateCriteria() {
 		return terminate;
 	}
 
-	public void setTerminateCriteria(TerminateCriteria<T> terminate) {
+	public void setTerminateCriteria(TerminateCriteria terminate) {
 		this.terminate = terminate;
 	}
 
@@ -173,11 +176,11 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 		this.solutionSpace = solutionSpace;
 	}
 
-	public Individual getBestSolution() {
+	public Solution getBestSolution() {
 		return bestSolution;
 	}
 
-	public void setBestSolution(Individual bestSolution) {
+	public void setBestSolution(Solution bestSolution) {
 		this.bestSolution = bestSolution;
 		log.info("New best solution (" + bestSolution + ")");
 	}
@@ -196,13 +199,5 @@ public abstract class EvolAlgorithm<T extends Individual> extends Observable
 
 	public void incrementGeneration() {
 		this.generation++;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String name) {
-		model = name;
 	}
 }

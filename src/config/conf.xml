@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <config_managers>
-        <config_manager type="algorithm" class="org.evolution.config.algorithm.GeneticAlgorithmModel" />
-        <config_manager type="cross" class="org.evolution.config.cross.OnePointCrossModel" />
+        <config_manager name="CM_GA" type="algorithm" model="org.evolution.config.algorithm.GeneticAlgorithmModel" instance="org.evolution.ga.GeneticAlgorithm" />
+		<config_manager name="CM_SELECT_WHEEL" type="select" model="org.evolution.config.select.RouleteWheelSelectModel" instance="org.evolution.function.select.RouleteWheelSelectFunction" />
+        <config_manager name="CM_CROSS" type="cross" model="org.evolution.config.cross.OnePointCrossModel" instance="org.evolution.function.cross.OnePointCrossFunction" />
+        <config_manager name="CM_MUTATE" type="mutate" model="org.evolution.config.mutate.StandardMutateModel" instance="org.evolution.function.mutate.StandardMutateFunction" />
+        <config_manager name="CM_POPULATION" type="population" model="org.evolution.config.population.PopulationModel" instance="org.evolution.population.Population" />
+        <config_manager name="CM_SPACE" type="space" model="org.evolution.config.space.ArraySolutionSpaceModel" instance="org.evolution.space.ArraySolutionSpace" />
+        <config_manager name="CM_FITNESS" type="fitness" model="org.evolution.config.fitness.TestFitnessModel" instance="org.evolution.function.fitness.TestFunction" />
+        <config_manager name="CM_ARRAYSOLUTION" type="solution" model="org.evolution.config.population.solution.ArraySolutionModel" instance="org.evolution.population.solution.ArraySolution" />
     </config_managers>
 </config>

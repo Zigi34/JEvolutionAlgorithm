@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.evolution.function.SelectFunction;
 import org.evolution.population.Population;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.Solution;
 import org.evolution.util.Constants;
 import org.evolution.util.PropertyManager;
 import org.evolution.util.Utils;
@@ -17,15 +17,15 @@ public class RouleteWheelSelectFunction implements SelectFunction {
 			Constants.PROPERTY_EVOLUTION_SELECT_DEFAULT_PROBABILITY));
 	private Integer maxSelected;
 
-	public List<Individual> select(Population population) {
+	public List<Solution> select(Population population) {
 		List<Double> fitnesses = new LinkedList<Double>();
 		double sumValue = 0.0;
-		for (Individual item : population) {
+		for (Solution item : population) {
 			sumValue += item.getFitness();
 			fitnesses.add(sumValue);
 		}
 
-		List<Individual> result = new LinkedList<Individual>();
+		List<Solution> result = new LinkedList<Solution>();
 		int maxItems = 0;
 
 		if (maxSelected != null)
@@ -61,5 +61,11 @@ public class RouleteWheelSelectFunction implements SelectFunction {
 
 	public int getMaxSelected() {
 		return maxSelected;
+	}
+
+	@Override
+	public String toString() {
+		return "RuleteWheelSelect(" + getProbability() + ")("
+				+ getMaxSelected() + ")";
 	}
 }

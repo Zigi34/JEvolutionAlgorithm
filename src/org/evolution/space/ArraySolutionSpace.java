@@ -4,15 +4,15 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.evolution.population.individual.ArrayIndividual;
-import org.evolution.population.individual.Individual;
+import org.evolution.population.solution.ArraySolution;
+import org.evolution.population.solution.Solution;
 import org.evolution.space.bounds.ArrayIndividualBound;
 import org.evolution.space.bounds.SolutionBound;
 import org.evolution.util.Bound;
 import org.evolution.value.NumericValue;
 
 public class ArraySolutionSpace implements
-		SolutionSpace<ArrayIndividual<NumericValue>> {
+		SolutionSpace<ArraySolution<NumericValue>> {
 
 	private Hashtable<Integer, ArrayIndividualBound> bounds = new Hashtable<Integer, ArrayIndividualBound>();
 	private int dimension;
@@ -21,8 +21,8 @@ public class ArraySolutionSpace implements
 		this.dimension = dimension;
 	}
 
-	public Individual randomIndividual() {
-		ArrayIndividual<NumericValue> randomIndividual = new ArrayIndividual<NumericValue>(
+	public Solution randomIndividual() {
+		ArraySolution<NumericValue> randomIndividual = new ArraySolution<NumericValue>(
 				dimension);
 		for (int i = 0; i < dimension; i++) {
 			Bound bound = getBound(i).getBound();
@@ -33,10 +33,10 @@ public class ArraySolutionSpace implements
 		return randomIndividual;
 	}
 
-	public boolean isValid(Individual individual) {
-		if (individual instanceof ArrayIndividual<?>) {
-			ArrayIndividual<NumericValue> value = (ArrayIndividual<NumericValue>) individual;
-			for (SolutionBound<ArrayIndividual<NumericValue>> bound : bounds
+	public boolean isValid(Solution individual) {
+		if (individual instanceof ArraySolution<?>) {
+			ArraySolution<NumericValue> value = (ArraySolution<NumericValue>) individual;
+			for (SolutionBound<ArraySolution<NumericValue>> bound : bounds
 					.values()) {
 				if (!bound.isValid(value))
 					return false;
@@ -46,21 +46,21 @@ public class ArraySolutionSpace implements
 		return false;
 	}
 
-	public void repairIndividual(Individual individual) {
+	public void repairIndividual(Solution individual) {
 
 	}
 
 	public void setSolutionBounds(
-			List<SolutionBound<ArrayIndividual<NumericValue>>> bounds) {
+			List<SolutionBound<ArraySolution<NumericValue>>> bounds) {
 		this.bounds.clear();
-		for (SolutionBound<ArrayIndividual<NumericValue>> bound : bounds) {
+		for (SolutionBound<ArraySolution<NumericValue>> bound : bounds) {
 			ArrayIndividualBound value = (ArrayIndividualBound) bound;
 			this.bounds.put(value.getIndex(), value);
 		}
 	}
 
-	public List<SolutionBound<ArrayIndividual<NumericValue>>> getSolutionBounds() {
-		List<SolutionBound<ArrayIndividual<NumericValue>>> list = new LinkedList<SolutionBound<ArrayIndividual<NumericValue>>>();
+	public List<SolutionBound<ArraySolution<NumericValue>>> getSolutionBounds() {
+		List<SolutionBound<ArraySolution<NumericValue>>> list = new LinkedList<SolutionBound<ArraySolution<NumericValue>>>();
 		list.addAll(this.bounds.values());
 		return list;
 	}
@@ -75,5 +75,10 @@ public class ArraySolutionSpace implements
 
 	public void setDimension(int dimension) {
 		this.dimension = dimension;
+	}
+
+	@Override
+	public String toString() {
+		return "ArraySolutionSpace(" + getDimension() + ")";
 	}
 }

@@ -1,4 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<algorithm type="GeneticAlgorithmModel">
+<algorithm model="CM_GA">
   <generation>10</generation>
+  <select_function model="CM_SELECT_WHEEL">
+    <probability>0.8</probability>
+    <max_select>10</max_select>
+  </select_function>
+  <cross_function model="CM_CROSS">
+    <probability>0.75</probability>
+  </cross_function>
+  <mutate_function model="CM_MUTATE">
+    <probability>0.8</probability>
+  </mutate_function>
+  <population max="10" model="CM_POPULATION">
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.15728658332743117</value>
+      <value>0.6608987771749932</value>
+      <fitness>0.10395051058713194</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.6054258770404756</value>
+      <value>0.9702115541985338</value>
+      <fitness>0.5873911811154502</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.9519949021056168</value>
+      <value>0.548808821823932</value>
+      <fitness>0.522463200606973</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.4381268185126581</value>
+      <value>0.9745383607745992</value>
+      <fitness>0.42697139152471614</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.09865744940666876</value>
+      <value>0.9353039689959619</value>
+      <fitness>0.0922747040010756</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.6630499021351501</value>
+      <value>0.00378474242894844</value>
+      <fitness>0.0025094730971210134</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.2898173300225666</value>
+      <value>0.15327593118998906</value>
+      <fitness>0.04442202113420527</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.6084553590620926</value>
+      <value>0.7557241165759798</value>
+      <fitness>0.45982438870312053</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.5281444903373175</value>
+      <value>0.49045714884228186</value>
+      <fitness>0.2590322409076008</fitness>
+    </solution>
+    <solution model="CM_ARRAYSOLUTION">
+      <value>0.2668255674259101</value>
+      <value>0.5156819991451475</value>
+      <fitness>0.13759714203323167</fitness>
+    </solution>
+  </population>
+  <solution_space model="CM_SPACE" size="2">
+    <bounds>
+      <bound max="10.0" min="0.0"/>
+      <bound max="20.0" min="10.0"/>
+    </bounds>
+  </solution_space>
+  <fitness_function model="CM_FITNESS"/>
 </algorithm>
